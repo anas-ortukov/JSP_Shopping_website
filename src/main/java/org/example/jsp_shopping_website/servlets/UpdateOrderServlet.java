@@ -5,9 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.jsp_shopping_website.entity.Order;
 import org.example.jsp_shopping_website.repo.OrderRepo;
-
 import java.io.IOException;
 
 @WebServlet(name = "Update Order", value = "/admin/update/order")

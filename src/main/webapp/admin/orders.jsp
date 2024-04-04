@@ -52,7 +52,7 @@
         <div class="row">
             <div class="col-2 offset-10 p-4">
                 <%--                TODO create Archive Page--%>
-                <a href="" class="btn btn-dark">Go to Archieve</a>
+                <a href="archive.jsp" class="btn btn-dark">Go to Archieve</a>
             </div>
         </div>
 
