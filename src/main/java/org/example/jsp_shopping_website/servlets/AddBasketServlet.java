@@ -17,6 +17,11 @@ public class AddBasketServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UUID productId = UUID.fromString(req.getParameter("productId"));
         BasketService.addBasketProduct(productId, req.getSession());
-        resp.sendRedirect("http://localhost:8080");
+        String categoryId = req.getParameter("categoryId");
+        if (categoryId.equals("null")) {
+            resp.sendRedirect("http://localhost:8080");
+        }else {
+            resp.sendRedirect("http://localhost:8080?categoryId=" + categoryId);
+        }
     }
 }

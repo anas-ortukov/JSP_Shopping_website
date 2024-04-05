@@ -16,7 +16,7 @@ import java.util.UUID;
 public class OrderProductRepo {
 
     public static List<OrderProduct> findAll() {
-        String query = "select * from order_product order by order_id";
+        String query = "select * from order_product";
         try (
                 Connection connection = ConnectionPoolManager.getDataSource().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)

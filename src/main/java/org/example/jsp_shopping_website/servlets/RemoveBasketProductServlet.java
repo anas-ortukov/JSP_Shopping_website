@@ -16,8 +16,12 @@ public class RemoveBasketProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UUID productId = UUID.fromString(req.getParameter("productId"));
-        String url = req.getParameter("url");
         BasketService.removeBasketProduct(productId, req.getSession());
-        resp.sendRedirect(url);
+        String categoryId = req.getParameter("categoryId");
+        if (categoryId.equals("null")) {
+            resp.sendRedirect("http://localhost:8080");
+        }else {
+            resp.sendRedirect("http://localhost:8080?categoryId=" + categoryId);
+        }
     }
 }

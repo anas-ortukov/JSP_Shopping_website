@@ -17,7 +17,8 @@
 <body>
 
 <%
-    Optional<User> currentUser = UserRepo.getUserBySession(request.getSession());%>
+    Optional<User> currentUser = UserRepo.getUserBySession(request.getSession());
+%>
 
 <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
@@ -31,21 +32,21 @@
             </span>
         </a>
         <% if (currentUser.isEmpty()) { %>
-        <a class="btn btn-dark text-white mx-3" href="login.jsp">Login</a>
+        <a class="btn btn-dark text-white me-3" href="login.jsp">Login</a>
         <% } else if (currentUser.get().getRole().equals(Role.USER)) { %>
-        <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+        <div class="dropdown bg-light-subtle">
+            <button class="btn btn-light dropdown-toggle me-3" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                 <%= currentUser.get().getLastName() + " " + currentUser.get().getFirstName()%>
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/client/my_orders.jsp">My Orders</a></li>
+                <li><a class="dropdown-item " href="/client/my_orders.jsp">My Orders</a></li>
                 <li><a class="dropdown-item" href="/logout">Log out</a></li>
             </ul>
         </div>
         <% } else { %>
         <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            <button class="btn btn-light dropdown-toggle me-3" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                 <%= currentUser.get().getLastName() + " " + currentUser.get().getFirstName()%>
             </button>

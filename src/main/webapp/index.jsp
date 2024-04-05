@@ -84,10 +84,10 @@
                         <p class="card-text text-black">Narxi: <%=numberFormat.format(product.getPrice())%> sum</p>
                         <% if (BasketService.getBasketProductById(product.getId(), request.getSession()).isPresent()) { %>
                         <a class="btn  text-white" style="background-color: navy;"
-                           href="/basket/product/remove?productId=<%= product.getId() %>&url=http://localhost:8080">
+                           href="/basket/product/remove?productId=<%= product.getId() + "&categoryId=" + categoryId%>">
                             Remove from Basket</a>
                         <% } else { %>
-                        <a class="btn btn-warning text-white" href="/basket/add?productId=<%= product.getId() %>">
+                        <a class="btn btn-warning text-white" href="/basket/add?productId=<%= product.getId() + "&categoryId=" + categoryId%>">
                             Add to Basket</a>
                         <%}%>
                     </div>

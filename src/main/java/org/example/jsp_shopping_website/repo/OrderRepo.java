@@ -18,7 +18,7 @@ import java.util.List;
 public class OrderRepo {
 
     public static List<Order> findAll() {
-        String query = "select * from orders order by date_time";
+        String query = "select * from orders order by status desc";
         try (
                 Connection connection = ConnectionPoolManager.getDataSource().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)

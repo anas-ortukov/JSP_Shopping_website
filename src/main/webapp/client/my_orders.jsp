@@ -3,7 +3,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.example.jsp_shopping_website.repo.OrderProductRepo" %>
 <%@ page import="org.example.jsp_shopping_website.entity.OrderProduct" %>
-<%@ page import="java.text.NumberFormat" %><%--
+<%@ page import="java.text.NumberFormat" %>
+<%@ page import="org.example.jsp_shopping_website.repo.ProductRepo" %><%--
   Created by IntelliJ IDEA.
   User: azizo
   Date: 05/04/2024
@@ -20,7 +21,8 @@
 <body>
 
 <%@include file="../navbar.jsp" %>
-<% List<Order> orders = OrderRepo.findAll();
+<%
+    List<Order> orders = OrderRepo.findAll();
     NumberFormat numberFormat = NumberFormat.getNumberInstance();
 %>
 
@@ -34,39 +36,72 @@
                     <th>Id</th>
                     <th>Created at</th>
                     <th>Status</th>
-                    <th>Products</th>
-                    <th>Total Price</th>
+                    <th>Order Details</th>
                 </tr>
                 </thead>
                 <tbody>
                 <% for (Order order : orders) {
                     if (order.getUserId().equals(currentUser.get().getId())) {
-                    int orderTotalPrice = 0;
                 %>
                 <tr>
-                    <td><%= order.getId()%>
-                    </td>
-                    <td><%= order.showDateTime()%>
-                    </td>
-                    <td><%= order.getStatus()%>
-                    </td>
-                    <td>
-                        <button class="btn btn-light dropdown-toggle text-black" type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">Products
+                    <p class="d-inline-flex gap-1">
+                        <td><%= order.getId()%>
+                        </td>
+                        <td><%= order.showDateTime()%>
+                        </td>
+                        <td><%= order.getStatus()%>
+                        </td>
+                        <td>
+                    <p class="d-inline-flex gap-1">
+                        <button class="btn btn-light" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#<%="Order"+order.getId()%>" aria-expanded="false"
+                                aria-controls="<%="Order"+order.getId()%>">
+                            View order detail
                         </button>
-                        <ul class="dropdown-menu text-center">
-                            <% for (OrderProduct orderProduct : OrderProductRepo.getOrderProductsByOrderId(order.getId())) {
-                                orderTotalPrice += orderProduct.getTotalPrice();
-                            %>
-                            <li><%= orderProduct.getProduct().getName() + " -> " + orderProduct.getAmount()%></li>
-                            <hr>
-                            <% } %>
-                        </ul>
+                    </p>
                     </td>
-                    <td><%=numberFormat.format(orderTotalPrice)%> sum</td>
                 </tr>
-                <% }} %>
+                <tr>
+                    <td colspan="4">
+                        <div class="collapse" id="<%="Order"+order.getId()%>">
+                            <div class="card card-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Amount</th>
+                                        <th>Product price</th>
+                                        <th>Order product price</th>
+                                        <th>Total order price</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <%
+                                        int orderTotalPrice = 0;
+                                        for (OrderProduct orderProduct : OrderProductRepo.getOrderProductsByOrderId(order.getId())) {
+                                            orderTotalPrice += orderProduct.getTotalPrice(); %>
+                                        <tr>
+
+                                        <td><%= orderProduct.getProduct().getName() %> </td>
+                                        <td><%= orderProduct.getAmount() %> </td>
+                                        <td><%= numberFormat.format(orderProduct.getProduct().getPrice()) + " sum"  %> </td>
+                                        <td><%= numberFormat.format(orderProduct.getTotalPrice()) + " sum"  %> </td>
+                                            <td></td>
+                                        </tr>
+                                        <%    } %>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><%= numberFormat.format(orderTotalPrice) + " sum" %> </td>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <% }
+                } %>
                 </tbody>
             </table>
         </div>

@@ -61,7 +61,7 @@
                         <input name="orderId" hidden="hidden" value="<%=orderId%>">
                     </label>
                     <div style="display: flex; align-items: center;" class="mt-3">
-                        <label>
+
                             <select name="orderStatus" class="form-select" style="width: 40%">
                                 <%
                                     for (Status status : Status.values()) {
@@ -77,7 +77,7 @@
                                     }
                                 %>
                             </select>
-                        </label>
+
                         <div class="offset-3">
                             <button class="btn btn-warning text-white">Change status</button>
                             <a class="btn btn-dark text-white ms-4" href="orders.jsp">Back</a>
