@@ -1,8 +1,4 @@
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Calendar" %>
-<%@ page import="org.example.jsp_shopping_website.entity.Category" %>
-<%@ page import="org.example.jsp_shopping_website.repo.CategoryRepo" %>
-<%@ page import="org.example.jsp_shopping_website.entity.OrderProduct" %>
 <%@ page import="org.example.jsp_shopping_website.repo.OrderRepo" %>
 <%@ page import="org.example.jsp_shopping_website.entity.Order" %>
 <%@ page import="org.example.jsp_shopping_website.entity.enums.Status" %>
@@ -33,9 +29,7 @@
 
     <div class="col-2 border-right p-4">
         <ul class="list-group">
-            <a href="category.jsp" style="text-decoration: none">
-                <li class="list-group-item ">Category</li>
-            </a>
+            <a href="category.jsp" style="text-decoration: none"><li class="list-group-item ">Category</li></a>
             <a href="product.jsp" style="text-decoration: none">
                 <li class="list-group-item">Product</li>
             </a>
@@ -68,9 +62,10 @@
             <div class="card bg-light rounded my-3 py-4">
                 <div class="card offset-1">
                     <div class="card-body">
-                        <h5 class="card-text">Order ID: <%= order.getId()%></h5>
-                        <p class="card-title">Products: <%= OrderRepo.getProductAmount(order)%></p>
-                        <p class="card-title">Order's Total Price: <%= numberFormat.format(OrderRepo.getOrderSum(order))%></p>
+                        <h5 class="card-text">Order ID: <span style="font-weight: normal"><%= order.getId()%></span></h5>
+                        <p class="card-title"><span style="font-weight: bold">Products: </span><%= OrderRepo.getProductAmount(order)%></p>
+                        <p class="card-title"><span style="font-weight: bold">User ID: </span><%= order.getUserId()%></p>
+                        <p class="card-title"><span style="font-weight: bold">Order's Total Price: </span><%= numberFormat.format(OrderRepo.getOrderSum(order))%></p>
                         <a class="btn btn-warning text-white my-3" href="orderDetails.jsp?orderId=<%=order.getId()%>">Order Details</a>
                     </div>
                 </div>
@@ -87,9 +82,10 @@
         <div class="card bg-light rounded my-3 py-4">
             <div class="card offset-1">
                 <div class="card-body">
-                    <h5 class="card-text">Order ID: <%= order.getId()%></h5>
-                    <p class="card-title">Products: <%= OrderRepo.getProductAmount(order)%></p>
-                    <p class="card-title">Order's Total Price: <%= numberFormat.format(OrderRepo.getOrderSum(order))%></p>
+                    <h5 class="card-text">Order ID: <span style="font-weight: normal"><%= order.getId()%></span></h5>
+                    <p class="card-title"><span style="font-weight: bold">Products: </span><%= OrderRepo.getProductAmount(order)%></p>
+                    <p class="card-title"><span style="font-weight: bold">User ID: </span><%= order.getUserId()%></p>
+                    <p class="card-title"><span style="font-weight: bold">Order's Total Price: </span><%= numberFormat.format(OrderRepo.getOrderSum(order))%></p>
                     <a class="btn btn-warning text-white my-3" href="orderDetails.jsp?orderId=<%=order.getId()%>">Order Details</a>
                 </div>
             </div>
@@ -106,9 +102,10 @@
         <div class="card bg-light rounded my-3 py-4">
             <div class="card offset-1">
                 <div class="card-body">
-                    <h5 class="card-text">Order ID: <%= order.getId()%></h5>
-                    <p class="card-title">Products: <%= OrderRepo.getProductAmount(order)%></p>
-                    <p class="card-title">Order's Total Price: <%= numberFormat.format(OrderRepo.getOrderSum(order))%></p>
+                    <h5 class="card-text">Order ID: <span style="font-weight: normal"><%= order.getId()%></span></h5>
+                    <p class="card-title"><span style="font-weight: bold">Products: </span><%= OrderRepo.getProductAmount(order)%></p>
+                    <p class="card-title"><span style="font-weight: bold">User ID: </span><%= order.getUserId()%></p>
+                    <p class="card-title"><span style="font-weight: bold">Order's Total Price: </span><%= numberFormat.format(OrderRepo.getOrderSum(order))%></p>
                     <a class="btn btn-warning text-white my-3" href="orderDetails.jsp?orderId=<%=order.getId()%>">Order Details</a>
                 </div>
             </div>

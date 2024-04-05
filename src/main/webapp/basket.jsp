@@ -12,15 +12,15 @@
 <html>
 <head>
     <title>Basket</title>
-    <link rel="stylesheet" href="../static/bootstrap.min.css">
+    <link rel="stylesheet" href="static/bootstrap.min.css">
 </head>
 <body>
 
 <%
-    List<BasketProduct> basketProducts = BasketService.getBasketProducts();
+    List<BasketProduct> basketProducts = BasketService.getListBasketProduct(request.getSession());
     NumberFormat numberFormat = NumberFormat.getNumberInstance();
     if (basketProducts.isEmpty()) {
-        response.sendRedirect("/client/empty_basket.jsp");
+        response.sendRedirect("/empty_basket.jsp");
         return;
     }
 %>
@@ -59,7 +59,7 @@
                     <a class="btn btn-dark text-white offset-1 "
                        href="http://localhost:8080">Back</a>
                     <a class="btn btn-warning text-white mx-4"
-                       href="/order/confirm?basketId=<%=basketProducts.getFirst().getBasketId()%>">Confirm Order</a>
+                       href="/order/confirm">Confirm Order</a>
                 </div>
             </div>
         </div>

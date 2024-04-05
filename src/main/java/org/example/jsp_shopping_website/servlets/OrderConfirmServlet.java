@@ -16,8 +16,7 @@ public class OrderConfirmServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UUID basketId = UUID.fromString(req.getParameter("basketId"));
-        OrderService.createOrder(basketId);
+        OrderService.createOrder(req.getSession());
         resp.sendRedirect("http://localhost:8080");
     }
 }

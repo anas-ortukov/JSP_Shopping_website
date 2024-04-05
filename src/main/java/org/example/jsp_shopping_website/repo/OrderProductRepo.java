@@ -1,7 +1,9 @@
 package org.example.jsp_shopping_website.repo;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.jsp_shopping_website.config.ConnectionPoolManager;
 import org.example.jsp_shopping_website.entity.OrderProduct;
+import org.example.jsp_shopping_website.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +16,7 @@ import java.util.UUID;
 public class OrderProductRepo {
 
     public static List<OrderProduct> findAll() {
-        String query = "select * from orderproduct order by order_id";
+        String query = "select * from order_product order by order_id";
         try (
                 Connection connection = ConnectionPoolManager.getDataSource().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)
@@ -36,7 +38,7 @@ public class OrderProductRepo {
     }
 
     public static List<OrderProduct> getOrderProductsByOrderId(Integer orderId) {
-        String query = "select * from orderproduct where order_id = ? order by order_id ";
+        String query = "select * from order_product where order_id = ? order by order_id ";
         try (
                 Connection connection = ConnectionPoolManager.getDataSource().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)

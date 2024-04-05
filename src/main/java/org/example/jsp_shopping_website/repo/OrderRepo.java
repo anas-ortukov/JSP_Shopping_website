@@ -29,7 +29,7 @@ public class OrderRepo {
                 products.add(new Order(
                                 resultSet.getInt("id"),
                                 resultSet.getTimestamp("date_time").toLocalDateTime(),
-                                null,
+                                resultSet.getInt("user_id"),
                                 Status.valueOf(resultSet.getString("status"))
                         )
                 );
@@ -74,7 +74,7 @@ public class OrderRepo {
             return new Order(
                     resultSet.getInt("id"),
                     resultSet.getTimestamp("date_time").toLocalDateTime(),
-                    null,
+                    resultSet.getInt("user_id"),
                     Status.valueOf(resultSet.getString("status")));
         } catch (SQLException e) {
             throw new RuntimeException(e);

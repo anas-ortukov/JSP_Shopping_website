@@ -16,7 +16,7 @@ public class Order {
 
     private Integer id;
     private LocalDateTime dateTime;
-    private UUID userId;
+    private Integer userId;
     private Status status;
 
     public String showDateTime() {

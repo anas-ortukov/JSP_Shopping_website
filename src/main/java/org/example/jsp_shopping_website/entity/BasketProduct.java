@@ -17,7 +17,6 @@ import java.util.UUID;
 public class BasketProduct {
 
     private UUID productId;
-    private UUID basketId;
     private Integer amount;
 
     public Product getProduct() {

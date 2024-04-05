@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Empty Basket</title>
-    <link rel="stylesheet" href="../static/bootstrap.min.css">
+    <link rel="stylesheet" href="static/bootstrap.min.css">
 </head>
 <body>
 <div class="row">

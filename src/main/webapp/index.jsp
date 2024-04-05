@@ -4,9 +4,9 @@
 <%@ page import="org.example.jsp_shopping_website.entity.Product" %>
 <%@ page import="org.example.jsp_shopping_website.repo.ProductRepo" %>
 <%@ page import="java.util.UUID" %>
-<%@ page import="java.util.Objects" %>
 <%@ page import="org.example.jsp_shopping_website.service.BasketService" %>
-<%@ page import="java.text.NumberFormat" %><%--
+<%@ page import="java.text.NumberFormat" %>
+<%--
   Created by IntelliJ IDEA.
   User: azizo
   Date: 31/03/2024
@@ -17,8 +17,7 @@
 <html>
 <head>
     <title>Mango Market</title>
-    <link rel="stylesheet" href="static/bootstrap.min.css">
-    <style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">    <style>
 
         .card-img-top {
             width: 250px;
@@ -39,28 +38,17 @@
 </head>
 <body>
 
-<% UUID categoryId = null;
+<%  UUID categoryId = null;
     if (request.getParameter("categoryId") != null) {
         categoryId = UUID.fromString(request.getParameter("categoryId"));
     }
     NumberFormat numberFormat = NumberFormat.getNumberInstance();
     List<Product> products = ProductRepo.findAll();
+
 %>
 
+<%@include file="navbar.jsp"%>
 
-<nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand mx-3" href="http://localhost:8080"><img src="photos/mango_logo.png" alt="Logo" height="80"
-                                                                  class="d-inline-block align-top"></a>
-        <a class="text-white offset-9" href="client/basket.jsp">
-            <button type="button" class="btn btn-warning position-relative text-white">Basket</button>
-            <span class="top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            <%= BasketService.getBasketProductAmount()%>
-            </span>
-        </a>
-        <a class="btn btn-dark text-white mx-3" href="admin/admin.jsp">Admin</a>
-    </div>
-</nav>
 <div class="row" style="width: 100%">
     <div class="col-2 p-4 mx-3">
 
@@ -94,7 +82,7 @@
                         <h5 class="card-title text-black"><%=product.getName()%>
                         </h5>
                         <p class="card-text text-black">Narxi: <%=numberFormat.format(product.getPrice())%> sum</p>
-                        <% if (BasketService.checkBasketProduct(product.getId())) { %>
+                        <% if (BasketService.getBasketProductById(product.getId(), request.getSession()).isPresent()) { %>
                         <a class="btn  text-white" style="background-color: navy;"
                            href="/basket/product/remove?productId=<%= product.getId() %>&url=http://localhost:8080">
                             Remove from Basket</a>
@@ -110,5 +98,6 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

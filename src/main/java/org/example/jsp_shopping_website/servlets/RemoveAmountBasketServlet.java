@@ -16,11 +16,11 @@ public class RemoveAmountBasketServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getParameter("basketProductId").equals("denied")) {
-            resp.sendRedirect("/client/basket.jsp");
+            resp.sendRedirect("/basket.jsp");
             return;
         }
         UUID productId = UUID.fromString(req.getParameter("basketProductId"));
-        BasketService.removeAmountBasketProduct(productId);
-        resp.sendRedirect("/client/basket.jsp");
+        BasketService.removeAmountBasketProduct(productId, req.getSession());
+        resp.sendRedirect("/basket.jsp");
     }
 }
