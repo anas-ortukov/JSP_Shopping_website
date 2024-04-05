@@ -4,7 +4,8 @@
 <%@ page import="org.example.jsp_shopping_website.repo.OrderProductRepo" %>
 <%@ page import="org.example.jsp_shopping_website.entity.OrderProduct" %>
 <%@ page import="java.text.NumberFormat" %>
-<%@ page import="org.example.jsp_shopping_website.repo.ProductRepo" %><%--
+<%@ page import="org.example.jsp_shopping_website.repo.ProductRepo" %>
+<%@ page import="org.example.jsp_shopping_website.entity.enums.Status" %><%--
   Created by IntelliJ IDEA.
   User: azizo
   Date: 05/04/2024
@@ -35,19 +36,23 @@
                 <tr>
                     <th>Id</th>
                     <th>Created at</th>
+                    <th>Completed at</th>
                     <th>Status</th>
                     <th>Order Details</th>
                 </tr>
                 </thead>
                 <tbody>
                 <% for (Order order : orders) {
-                    if (order.getUserId().equals(currentUser.get().getId())) {
+                    if (order.getUserId().equals(currentUser.get().getId()) &&
+                            !order.getStatus().equals(Status.ARCHIVED)) {
                 %>
                 <tr>
                     <p class="d-inline-flex gap-1">
                         <td><%= order.getId()%>
                         </td>
-                        <td><%= order.showDateTime()%>
+                        <td><%= order.showDateTime(order.getDateTime())%>
+                        </td>
+                        <td><%= order.showDateTime(order.getCompletedTime())%>
                         </td>
                         <td><%= order.getStatus()%>
                         </td>
@@ -62,7 +67,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         <div class="collapse" id="<%="Order"+order.getId()%>">
                             <div class="card card-body">
                                 <table class="table">

@@ -51,7 +51,7 @@
                 </div>
                 <% } %>
                 <div class="card bg-light rounded py-3 mb-3 text-center">
-                    <h5>Order created at: <span style="font-weight: normal"> <%= order.showDateTime()%></span></h5>
+                    <h5>Order created at: <span style="font-weight: normal"> <%= order.showDateTime(order.getDateTime())%></span></h5>
                     <h5 class="">Order status: <span style="font-weight: normal"> <%= order.getStatus()%></span></h5>
                     <h5 class="">User ID: <span style="font-weight: normal"> <%= order.getUserId()%></span></h5>
                     <h5>Overall: <span style="font-weight: normal"> <%=numberFormat.format(OrderService.getOverallBasketPrice(orderProducts))%>sum</span></h5>

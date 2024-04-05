@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.jsp_shopping_website.entity.enums.Status;
 import org.example.jsp_shopping_website.repo.OrderRepo;
 import java.io.IOException;
 
@@ -18,8 +19,13 @@ public class UpdateOrderServlet extends HttpServlet {
         if (newStatus == null) {
             resp.sendRedirect("/admin/orders.jsp");
         }else {
+            boolean completed = false;
+            if (Status.valueOf(newStatus).equals(Status.COMPLETED) ||
+                    Status.valueOf(newStatus).equals(Status.ARCHIVED)) {
+                    completed = true;
+            }
             int orderId = Integer.parseInt(req.getParameter("orderId"));
-            OrderRepo.changeStatus(newStatus, orderId);
+            OrderRepo.changeStatus(newStatus, orderId, completed);
             resp.sendRedirect("/admin/orders.jsp");
         }
     }

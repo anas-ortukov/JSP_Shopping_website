@@ -6,10 +6,7 @@ import org.example.jsp_shopping_website.entity.OrderProduct;
 import org.example.jsp_shopping_website.entity.Product;
 import org.example.jsp_shopping_website.entity.enums.Status;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -26,11 +23,17 @@ public class OrderRepo {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Order> products = new ArrayList<>();
             while (resultSet.next()) {
+                LocalDateTime completedTime = null;
+                Timestamp completedTimestamp = resultSet.getTimestamp("completed_time");
+                if (completedTimestamp != null) {
+                    completedTime = completedTimestamp.toLocalDateTime();
+                }
                 products.add(new Order(
                                 resultSet.getInt("id"),
                                 resultSet.getTimestamp("date_time").toLocalDateTime(),
                                 resultSet.getInt("user_id"),
-                                Status.valueOf(resultSet.getString("status"))
+                                Status.valueOf(resultSet.getString("status")),
+                                completedTime
                         )
                 );
             }
@@ -71,19 +74,28 @@ public class OrderRepo {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSS");
+            LocalDateTime completedTime = null;
+            Timestamp completedTimestamp = resultSet.getTimestamp("completed_time");
+            if (completedTimestamp != null) {
+                completedTime = completedTimestamp.toLocalDateTime();
+            }
             return new Order(
                     resultSet.getInt("id"),
                     resultSet.getTimestamp("date_time").toLocalDateTime(),
                     resultSet.getInt("user_id"),
-                    Status.valueOf(resultSet.getString("status")));
+                    Status.valueOf(resultSet.getString("status")),
+                    completedTime);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
 
-    public static void changeStatus(String newStatus, int orderId) {
+    public static void changeStatus(String newStatus, int orderId, boolean completed) {
         String query = "UPDATE orders SET status = ? WHERE id = ?";
+        if (completed) {
+            query = "UPDATE orders SET status = ?, completed_time = now() WHERE id = ?";
+        }
         try (
                 Connection connection = ConnectionPoolManager.getDataSource().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)

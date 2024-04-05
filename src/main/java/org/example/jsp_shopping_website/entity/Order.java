@@ -18,10 +18,14 @@ public class Order {
     private LocalDateTime dateTime;
     private Integer userId;
     private Status status;
+    private LocalDateTime completedTime;
 
-    public String showDateTime() {
+    public String showDateTime(LocalDateTime time) {
+        if (time == null) {
+            return "Not Yet";
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm d-MMMM yyyy");
-        return dateTime.format(formatter);
+        return time.format(formatter);
     }
 
 }
