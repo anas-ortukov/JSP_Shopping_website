@@ -24,7 +24,7 @@
                 <a class="nav-link" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <%= uri.contains("category")?"active bg-secondary text-white rounded":""%>" href="/admin/category.jsp">Category</a>
+                <a class="nav-link <%= uri.contains("category")?"active bg-secondary text-white rounded":""%>" href="/admin/category.jsp">Categories</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link <%= uri.contains("product")?"active bg-secondary text-white rounded":""%>" href="/admin/product.jsp">Products</a>
