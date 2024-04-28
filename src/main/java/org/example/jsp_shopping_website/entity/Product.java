@@ -1,25 +1,28 @@
 package org.example.jsp_shopping_website.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.jsp_shopping_website.repo.CategoryRepo;
+import org.hibernate.annotations.Check;
 
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Builder
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
+    @Check(constraints = "price > 0")
     private Integer price;
-    private UUID categoryId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Category category;
     private byte[] image;
-
-    public String getCategoryName() {
-        Category category = CategoryRepo.findById(categoryId);
-        return category.getName();
-    }
 }

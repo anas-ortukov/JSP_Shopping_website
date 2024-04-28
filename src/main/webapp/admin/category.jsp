@@ -17,34 +17,17 @@
 <body>
 
 <%
-    List<Category> categories = CategoryRepo.findAll();
+    CategoryRepo categoryRepo = new CategoryRepo();
+    List<Category> categories = categoryRepo.findAll();
 %>
 
-<div class="row">
-    <div class="col-2 border-right p-4">
-        <ul class="list-group">
-            <a href="category.jsp" style="text-decoration: none">
-                <li class="list-group-item bg-dark text-white">Category</li>
-            </a>
-            <a href="product.jsp" style="text-decoration: none">
-                <li class="list-group-item">Product</li>
-            </a>
-            <a href="orders.jsp" style="text-decoration: none">
-                <li class="list-group-item">Orders</li>
-            </a>
-            <a href="http://localhost:8080" style="text-decoration: none">
-                <li class="list-group-item">Go back to Menu</li>
-            </a>
-        </ul>
-    </div>
-    <div class="col-9">
+<%@include file="admin_navbar.jsp" %>
 
-        <div class="row">
-            <div class="col-2 offset-10 p-4">
-                <a href="addCategory.jsp" class="btn btn-dark">Add Category</a>
-            </div>
+<div class="row">
+    <div class="col-10 offset-1">
+        <div class="d-flex justify-content-end my-5 me-5">
+            <a href="addCategory.jsp" class="btn btn-success">Add Category</a>
         </div>
-        <hr>
 
         <div class="p-4">
             <table class="table table-striped">
@@ -57,14 +40,14 @@
                 </thead>
                 <tbody>
                 <% for (Category category : categories) {%>
-                <tr>
+                <tr style="vertical-align: middle">
                     <td><%= category.getId()%>
                     </td>
                     <td><%= category.getName()%>
                     </td>
                     <td>
                         <a href="editCategory.jsp?id=<%=category.getId()%>" class="btn btn-warning text-white">Edit</a>
-                        <a href="http://localhost:8080/category/delete?id=<%= category.getId()%>" class="btn btn-dark text-white">Delete</a>
+                        <a href="/admin/category/delete?id=<%= category.getId()%>" class="btn btn-dark text-white">Delete</a>
                     </td>
                 </tr>
                 <% } %>

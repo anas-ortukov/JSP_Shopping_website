@@ -21,7 +21,8 @@
 <body>
 
 <%
-    List<Order> orders = OrderRepo.findAll();
+    OrderRepo orderRepo = new OrderRepo();
+    List<Order> orders = orderRepo.findAll();
     NumberFormat numberFormat = NumberFormat.getNumberInstance();
 %>
 
@@ -73,21 +74,21 @@
                                         <th>Product</th>
                                         <th>Amount</th>
                                         <th>Product price</th>
-                                        <th>Order product price</th>
+                                        <th>Total product price</th>
                                         <th>Total order price</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <%
                                         int orderTotalPrice = 0;
-                                        for (OrderProduct orderProduct : OrderProductRepo.getOrderProductsByOrderId(order.getId())) {
+                                        for (OrderProduct orderProduct : order.getOrderProducts()) {
                                             orderTotalPrice += orderProduct.getTotalPrice(); %>
                                     <tr>
 
                                         <td><%= orderProduct.getProduct().getName() %> </td>
                                         <td><%= orderProduct.getAmount() %> </td>
-                                        <td><%= numberFormat.format(orderProduct.getProduct().getPrice()) + " sum"  %> </td>
-                                        <td><%= numberFormat.format(orderProduct.getTotalPrice()) + " sum"  %> </td>
+                                        <td><%= numberFormat.format(orderProduct.getProduct().getPrice()) + " $"  %> </td>
+                                        <td><%= numberFormat.format(orderProduct.getTotalPrice()) + " $"  %> </td>
                                         <td></td>
                                     </tr>
                                     <%    } %>
@@ -95,7 +96,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td><%= numberFormat.format(orderTotalPrice) + " sum" %> </td>
+                                    <td><%= numberFormat.format(orderTotalPrice) + " $" %> </td>
                                     </tbody>
                                 </table>
                             </div>
@@ -108,7 +109,7 @@
             </table>
         </div>
 
-        <a class="btn btn-dark text-white text-center mt-2" href="/index.jsp">Back</a>
+        <a class="btn btn-dark text-white text-center mt-2" href="/admin/orders.jsp">Back</a>
     </div>
 </div>
 

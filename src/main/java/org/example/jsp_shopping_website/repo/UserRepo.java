@@ -1,54 +1,14 @@
 package org.example.jsp_shopping_website.repo;
 
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import jakarta.servlet.http.HttpSession;
-import org.example.jsp_shopping_website.config.ConnectionPoolManager;
 import org.example.jsp_shopping_website.entity.User;
-import org.example.jsp_shopping_website.entity.enums.Role;
+import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-public class UserRepo {
-
-    public static List<User> findAll() {
-        String query = "SELECT * FROM users";
-        try(
-                Connection connection = ConnectionPoolManager.getDataSource().getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(query)
-                ) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<User> users = new ArrayList<>();
-            while(resultSet.next()) {
-                users.add(new User(
-                        resultSet.getInt("id"),
-                        resultSet.getString("email"),
-                        resultSet.getString("password"),
-                        Role.valueOf(resultSet.getString("role")),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name")
-                        )
-                );
-            }
-            return users;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    public static Optional<User> getUser(String email, String password) {
-        for (User user : findAll()) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                return Optional.of(user);
-            }
-        }
-        return Optional.empty();
-    }
+public class UserRepo extends BaseRepo<User, Integer>{
 
     public static Optional<User> getUserBySession(HttpSession session) {
         Object currentUser = session.getAttribute("currentUser");
@@ -57,5 +17,27 @@ public class UserRepo {
         }else {
             return Optional.empty();
         }
+    }
+
+    public Optional<User> getUser(String email, String password) {
+        TypedQuery<User> query = em.createQuery("from User where email = :email", User.class);
+        query.setParameter("email", email);
+        try {
+            User user = query.getSingleResult();
+            if (BCrypt.checkpw(password, user.getPassword())) {
+                return Optional.of(user);
+            }else {
+                return Optional.empty();
+            }
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+
+    }
+
+    public boolean registeredEmail(String email) {
+        TypedQuery<Long> query = em.createQuery("select count(*) from User where email = :email", Long.class);
+        query.setParameter("email", email);
+        return query.getSingleResult() > 0;
     }
 }

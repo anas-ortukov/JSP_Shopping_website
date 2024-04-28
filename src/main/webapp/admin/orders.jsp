@@ -17,102 +17,104 @@
 </head>
 <body>
 
+<%@include file="admin_navbar.jsp" %>
 <%
-    List<Order> orders = OrderRepo.findAll();
+    OrderRepo orderRepo = new OrderRepo();
+    List<Order> orders = orderRepo.findAll();
     NumberFormat numberFormat = NumberFormat.getNumberInstance();
-    List<Order> newOrders = OrderRepo.getOrderByStatus(orders, Status.NEW);
-    List<Order> inProgressOrders = OrderRepo.getOrderByStatus(orders, Status.IN_PROGRESS);
-    List<Order> completedOrders = OrderRepo.getOrderByStatus(orders, Status.COMPLETED);
+    List<Order> newOrders = orderRepo.getOrderByStatus(orders, Status.NEW);
+    List<Order> inProgressOrders = orderRepo.getOrderByStatus(orders, Status.IN_PROGRESS);
+    List<Order> completedOrders = orderRepo.getOrderByStatus(orders, Status.COMPLETED);
 %>
-
-<div class="row">
-
-    <div class="col-2 border-right p-4">
-        <ul class="list-group">
-            <a href="category.jsp" style="text-decoration: none"><li class="list-group-item ">Category</li></a>
-            <a href="product.jsp" style="text-decoration: none">
-                <li class="list-group-item">Product</li>
-            </a>
-            <a href="orders.jsp" style="text-decoration: none">
-                <li class="list-group-item bg-dark text-white">Orders</li>
-            </a>
-            <a href="http://localhost:8080" style="text-decoration: none">
-                <li class="list-group-item">Go back to Menu</li>
-            </a>
-        </ul>
+<div class="col-10 offset-1">
+    <div class="d-flex justify-content-end my-5 me-5">
+        <a href="archive.jsp" class="btn btn-success">Go to Archieve</a>
     </div>
-    <div class="col-9">
-
-        <div class="row">
-            <div class="col-2 offset-10 p-4">
-                <%--                TODO create Archive Page--%>
-                <a href="archive.jsp" class="btn btn-dark">Go to Archieve</a>
-            </div>
-        </div>
-
-        <h2 class="text-center">Orders</h2>
-
-        <hr>
-    </div>
-    <div class="col-3 offset-2">
-        <h3 class="text-center">New</h3>
-        <%
-            for (Order order : newOrders) {
-        %>
+    <div class="row">
+        <div class="col-4">
+            <h3 class="text-center">New</h3>
+            <%
+                for (Order order : newOrders) {
+            %>
             <div class="card bg-light rounded my-3 py-4">
                 <div class="card offset-1">
                     <div class="card-body">
-                        <h5 class="card-text">Order ID: <span style="font-weight: normal"><%= order.getId()%></span></h5>
-                        <p class="card-title"><span style="font-weight: bold">Products: </span><%= OrderRepo.getProductAmount(order)%></p>
-                        <p class="card-title"><span style="font-weight: bold">User ID: </span><%= order.getUserId()%></p>
-                        <p class="card-title"><span style="font-weight: bold">Order's Total Price: </span><%= numberFormat.format(OrderRepo.getOrderSum(order))%></p>
-                        <a class="btn btn-warning text-white my-3" href="orderDetails.jsp?orderId=<%=order.getId()%>">Order Details</a>
+                        <h5 class="card-text">Order ID: <span style="font-weight: normal"><%= order.getId()%></span>
+                        </h5>
+                        <p class="card-title"><span
+                                style="font-weight: bold">Products: </span><%= order.getOrderProducts().size()%>
+                        </p>
+                        <p class="card-title"><span
+                                style="font-weight: bold">Profile: </span><%= order.getUser().getEmail()%>
+                        </p>
+                        <p class="card-title"><span
+                                style="font-weight: bold">Total Price: </span><%= numberFormat.format(orderRepo.getOrderSum(order))%>$
+                        </p>
+                        <a class="btn btn-warning text-white my-3" href="orderDetails.jsp?orderId=<%=order.getId()%>">Order
+                            Details</a>
                     </div>
                 </div>
             </div>
-        <%
-            }
-        %>
-    </div>
-    <div class="col-3">
-        <h3 class="text-center">In Progress</h3>
-        <%
-            for (Order order : inProgressOrders) {
-        %>
-        <div class="card bg-light rounded my-3 py-4">
-            <div class="card offset-1">
-                <div class="card-body">
-                    <h5 class="card-text">Order ID: <span style="font-weight: normal"><%= order.getId()%></span></h5>
-                    <p class="card-title"><span style="font-weight: bold">Products: </span><%= OrderRepo.getProductAmount(order)%></p>
-                    <p class="card-title"><span style="font-weight: bold">User ID: </span><%= order.getUserId()%></p>
-                    <p class="card-title"><span style="font-weight: bold">Order's Total Price: </span><%= numberFormat.format(OrderRepo.getOrderSum(order))%></p>
-                    <a class="btn btn-warning text-white my-3" href="orderDetails.jsp?orderId=<%=order.getId()%>">Order Details</a>
+            <%
+                }
+            %>
+        </div>
+        <div class="col-4">
+            <h3 class="text-center">In Progress</h3>
+            <%
+                for (Order order : inProgressOrders) {
+            %>
+            <div class="card bg-light rounded my-3 py-4">
+                <div class="card offset-1">
+                    <div class="card-body">
+                        <h5 class="card-text">Order ID: <span style="font-weight: normal"><%= order.getId()%></span>
+                        </h5>
+                        <p class="card-title"><span
+                                style="font-weight: bold">Products: </span><%= order.getOrderProducts().size()%>
+                        </p>
+                        <p class="card-title"><span
+                                style="font-weight: bold">Profile: </span><%= order.getUser().getEmail()%>
+                        </p>
+                        <p class="card-title"><span
+                                style="font-weight: bold">Total Price: </span><%= numberFormat.format(OrderRepo.getOrderSum(order))%>$
+                        </p>
+                        <a class="btn btn-warning text-white my-3" href="orderDetails.jsp?orderId=<%=order.getId()%>">Order
+                            Details</a>
+                    </div>
                 </div>
             </div>
+            <%
+                }
+            %>
         </div>
-        <%
-            }
-        %>
-    </div>
-    <div class="col-3">
-        <h3 class="text-center">Completed</h3>
-        <%
-            for (Order order : completedOrders) {
-        %>
-        <div class="card bg-light rounded my-3 py-4">
-            <div class="card offset-1">
-                <div class="card-body">
-                    <h5 class="card-text">Order ID: <span style="font-weight: normal"><%= order.getId()%></span></h5>
-                    <p class="card-title"><span style="font-weight: bold">Products: </span><%= OrderRepo.getProductAmount(order)%></p>
-                    <p class="card-title"><span style="font-weight: bold">User ID: </span><%= order.getUserId()%></p>
-                    <p class="card-title"><span style="font-weight: bold">Order's Total Price: </span><%= numberFormat.format(OrderRepo.getOrderSum(order))%></p>
-                    <a class="btn btn-warning text-white my-3" href="orderDetails.jsp?orderId=<%=order.getId()%>">Order Details</a>
+        <div class="col-4">
+            <h3 class="text-center">Completed</h3>
+            <%
+                for (Order order : completedOrders) {
+            %>
+            <div class="card bg-light rounded my-3 py-4">
+                <div class="card offset-1">
+                    <div class="card-body">
+                        <h5 class="card-text">Order ID: <span style="font-weight: normal"><%= order.getId()%></span>
+                        </h5>
+                        <p class="card-title"><span
+                                style="font-weight: bold">Products: </span><%= order.getOrderProducts().size()%>
+                        </p>
+                        <p class="card-title"><span
+                                style="font-weight: bold">Profile: </span><%= order.getUser().getEmail()%>
+                        </p>
+                        <p class="card-title"><span
+                                style="font-weight: bold">Total Price: </span><%= numberFormat.format(OrderRepo.getOrderSum(order))%>$
+                        </p>
+                        <a class="btn btn-warning text-white my-3" href="orderDetails.jsp?orderId=<%=order.getId()%>">Order
+                            Details</a>
+                    </div>
                 </div>
             </div>
+            <%
+                }
+            %>
         </div>
-        <%
-            }
-        %>
     </div>
 </div>
 

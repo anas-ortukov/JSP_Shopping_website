@@ -17,11 +17,11 @@ public class AdminPageFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         Object currentUser = req.getSession().getAttribute("currentUser");
         if (currentUser == null) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp?nextUrl=/admin/admin.jsp");
+            resp.sendRedirect("/login.jsp");
+            req.getSession().setAttribute("nextUrl", req.getRequestURI());
         } else if (((User)currentUser).getRole().equals(Role.USER)) {
-            resp.sendRedirect("/404");
+            resp.sendRedirect("/");
         } else {
-            req.getSession().setAttribute("currentUser", currentUser);
             filterChain.doFilter(servletRequest, servletResponse);
         }
     }

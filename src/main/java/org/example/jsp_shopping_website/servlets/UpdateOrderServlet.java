@@ -12,6 +12,7 @@ import java.io.IOException;
 @WebServlet(name = "Update Order", value = "/admin/update/order")
 public class UpdateOrderServlet extends HttpServlet {
 
+    OrderRepo orderRepo = new OrderRepo();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -19,13 +20,10 @@ public class UpdateOrderServlet extends HttpServlet {
         if (newStatus == null) {
             resp.sendRedirect("/admin/orders.jsp");
         }else {
-            boolean completed = false;
-            if (Status.valueOf(newStatus).equals(Status.COMPLETED) ||
-                    Status.valueOf(newStatus).equals(Status.ARCHIVED)) {
-                    completed = true;
-            }
+            boolean completed = Status.valueOf(newStatus).equals(Status.COMPLETED) ||
+                    Status.valueOf(newStatus).equals(Status.ARCHIVED);
             int orderId = Integer.parseInt(req.getParameter("orderId"));
-            OrderRepo.changeStatus(newStatus, orderId, completed);
+            orderRepo.changeStatus(newStatus, orderId, completed);
             resp.sendRedirect("/admin/orders.jsp");
         }
     }

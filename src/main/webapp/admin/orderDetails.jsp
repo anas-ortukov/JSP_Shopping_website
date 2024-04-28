@@ -23,9 +23,10 @@
 <body>
 
 <%
+    ProductRepo productRepo = new ProductRepo();
+    OrderRepo orderRepo = new OrderRepo();
     Integer orderId = Integer.parseInt(request.getParameter("orderId"));
-    Order order = OrderRepo.getOrderById(orderId);
-    List<OrderProduct> orderProducts = OrderProductRepo.getOrderProductsByOrderId(orderId);
+    Order order = orderRepo.findById(orderId);
     NumberFormat numberFormat = NumberFormat.getNumberInstance();
 %>
 
@@ -34,27 +35,27 @@
         <h1 class="offset-3">Order Details</h1>
         <div class="card" style="width: 100%;">
             <div class="card-body">
-                <% for (OrderProduct orderProduct : orderProducts) {
-                    Product productById = ProductRepo.findById(orderProduct.getProductId());
+                <% for (OrderProduct orderProduct : order.getOrderProducts()) {
+                    Product productById = productRepo.findById(orderProduct.getProduct().getId());
                 %>
                 <div class="row bg-light rounded my-5">
-                    <div class="col-3 py-2">
+                    <div class="col-3 py-2 d-flex align-items-center">
 
-                        <img src="/file/download?productId=<%=orderProduct.getProductId()%>"
-                             class="card-img-bottom img-fluid mx-auto d-block" alt="...">
+                        <img src="/file/download?productId=<%=orderProduct.getProduct().getId()%>"
+                             class="  img-fluid mx-auto d-block" alt="...">
                     </div>
                     <div class="col-7 py-5 ">
-                        <h5 class="my-3">Product price: <span style="font-weight: normal"><%=numberFormat.format(productById.getPrice())%> sum</span></h5>
+                        <h5 class="my-3">Product price: <span style="font-weight: normal"><%=numberFormat.format(productById.getPrice())%> $</span></h5>
                         <h5 class="my-3">Product count: <span style="font-weight: normal"><%= orderProduct.getAmount() %> pieces</span></h5>
-                        <h5 class="my-3">Total order's price: <span style="font-weight: normal"><%=numberFormat.format(orderProduct.getTotalPrice()) %>sum</span></h5>
+                        <h5 class="my-3">Total order's price: <span style="font-weight: normal"><%=numberFormat.format(orderProduct.getTotalPrice()) %>$</span></h5>
                     </div>
                 </div>
                 <% } %>
                 <div class="card bg-light rounded py-3 mb-3 text-center">
                     <h5>Order created at: <span style="font-weight: normal"> <%= order.showDateTime(order.getDateTime())%></span></h5>
                     <h5 class="">Order status: <span style="font-weight: normal"> <%= order.getStatus()%></span></h5>
-                    <h5 class="">User ID: <span style="font-weight: normal"> <%= order.getUserId()%></span></h5>
-                    <h5>Overall: <span style="font-weight: normal"> <%=numberFormat.format(OrderService.getOverallBasketPrice(orderProducts))%>sum</span></h5>
+                    <h5 class="">Profile: <span style="font-weight: normal"> <%= order.getUser().getEmail()%></span></h5>
+                    <h5>Overall: <span style="font-weight: normal"> <%=numberFormat.format(OrderService.getOverallBasketPrice(order.getOrderProducts()))%>$</span></h5>
                 </div>
                 <form action="update/order" method="post">
                     <label>
@@ -62,7 +63,7 @@
                     </label>
                     <div style="display: flex; align-items: center;" class="mt-3">
 
-                            <select name="orderStatus" class="form-select" style="width: 40%">
+                            <select name="orderStatus" class="form-select" style="width: 50%">
                                 <%
                                     for (Status status : Status.values()) {
                                         if (status.equals(order.getStatus())) {
@@ -78,8 +79,8 @@
                                 %>
                             </select>
 
-                        <div class="offset-3">
-                            <button class="btn btn-warning text-white">Change status</button>
+                        <div class="d-flex">
+                            <button class="btn btn-warning text-white ms-5">Change status</button>
                             <a class="btn btn-dark text-white ms-4" href="orders.jsp">Back</a>
                         </div>
                     </div>

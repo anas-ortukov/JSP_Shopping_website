@@ -21,36 +21,18 @@
 <body>
 
 <%
-    List<Product> products = ProductRepo.findAll();
+    ProductRepo productRepo = new ProductRepo();
+    List<Product> products = productRepo.findAll();
     NumberFormat format = NumberFormat.getInstance();
 %>
 
-<div class="row">
-    <div class="col-2 border-right p-4">
-        <ul class="list-group">
-            <a href="category.jsp" style="text-decoration: none">
-                <li class="list-group-item ">Category</li>
-            </a>
-            <a href="product.jsp" style="text-decoration: none">
-                <li class="list-group-item bg-dark text-white">Product</li>
-            </a>
-            <a href="orders.jsp" style="text-decoration: none">
-                <li class="list-group-item">Orders</li>
-            </a>
-            
-            <a href="http://localhost:8080" style="text-decoration: none">
-                <li class="list-group-item">Go back to Menu</li>
-            </a>
-        </ul>
-    </div>
-    <div class="col-9">
+<%@include file="admin_navbar.jsp"%>
 
-        <div class="row">
-            <div class="col-2 offset-10 p-4">
-                <a href="addProduct.jsp" class="btn btn-dark">Add Product</a>
+<div class="row">
+    <div class="col-10 offset-1">
+            <div class="d-flex justify-content-end my-5 me-5">
+                <a href="addProduct.jsp" class="btn btn-success">Add Product</a>
             </div>
-        </div>
-        <hr>
 
         <div class="p-4">
             <table class="table table-striped">
@@ -71,14 +53,14 @@
                     </td>
                     <td><%= product.getName()%>
                     </td>
-                    <td><%= format.format(product.getPrice())%> sum
+                    <td><%= format.format(product.getPrice())%> $
                     </td>
-                    <td><%= product.getCategoryName()%>
+                    <td><%= product.getCategory().getName()%>
                     </td>
                     <td><img src="/file/download?productId=<%=product.getId()%>" width="60" alt=".."> </td>
                     <td>
                         <a href="editProduct.jsp?id=<%=product.getId()%>" class="btn btn-warning text-white">Edit</a>
-                        <a href="http://localhost:8080/product/delete?id=<%= product.getId()%>"
+                        <a href="/admin/product/delete?id=<%= product.getId()%>"
                            class="btn btn-dark text-white">Delete</a>
                     </td>
                 </tr>

@@ -2,7 +2,6 @@ package org.example.jsp_shopping_website.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -17,7 +16,7 @@ public class LoginPageFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         Object currentUser = req.getSession().getAttribute("currentUser");
         if (currentUser != null) {
-            resp.sendRedirect("/404");
+            resp.sendRedirect("/");
         }else {
             filterChain.doFilter(servletRequest, servletResponse);
         }

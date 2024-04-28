@@ -18,31 +18,35 @@
 </head>
 <body>
 
-<% UUID id = UUID.fromString(request.getParameter("id"));
-    Product product = ProductRepo.findById(id);
-    List<Category> categories = CategoryRepo.findAll();
+<%
+    ProductRepo productRepo = new ProductRepo();
+    CategoryRepo categoryRepo = new CategoryRepo();
+    UUID id = UUID.fromString(request.getParameter("id"));
+    Product product = productRepo.findById(id);
+    List<Category> categories = categoryRepo.findAll();
 %>
 
 <div class="row mt-4">
     <div class="col-4 offset-4">
         <div class="card p-2">
             <h1>Edit Product</h1>
-            <form method="post" action="http://localhost:8080/product/edit">
+            <form method="post" action="/admin/product/edit" enctype="multipart/form-data">
                 <input  type="hidden" value="<%= product.getId()%>" name="id">
-                <input value="<%= product.getName()%>" name="name" class="form-control my-3" type="text" placeholder="Name" required>
-                <input value="<%= product.getPrice()%>" name="price" class="form-control my-3" type="number" placeholder="Price" required>
-                <select name="categoryId" class="form-control my-3">
+                <input value="<%= product.getName()%>" name="name" class="form-control my-4" type="text" placeholder="Name" required>
+                <input value="<%= product.getPrice()%>" name="price" class="form-control my-4" type="number" placeholder="Price" required>
+                <select name="categoryId" class="form-control my-4">
                     <% for (Category category : categories) { %>
-                    <option <%= product.getCategoryId().equals(category.getId()) ? "selected":""%> value="<%=category.getId() %>"><%=category.getName()%>
+                    <option <%= product.getCategory().getId().equals(category.getId()) ? "selected":""%> value="<%=category.getId() %>"><%=category.getName()%>
                     </option>
                     <%}%>
                 </select>
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Old Image: <img src="/file/download?productId=<%=product.getId()%>" width="60" alt=".."> </label>
-                    <input class="form-control" type="file" id="formFile" name="image" required>
+                    <input class="form-control" type="file" id="formFile" name="image">
                 </div>
                 <div class="text-center">
-                    <button class="btn btn-dark w-100">Save</button>
+                    <button class="btn btn-warning text-white mx-4 px-5" type="submit">Save</button>
+                    <a class="btn btn-dark px-5" href="/admin/product.jsp">Back</a>
                 </div>
             </form>
         </div>

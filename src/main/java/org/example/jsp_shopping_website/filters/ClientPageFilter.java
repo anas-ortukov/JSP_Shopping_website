@@ -15,9 +15,9 @@ public class ClientPageFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         Object currentUser = req.getSession().getAttribute("currentUser");
         if (currentUser == null) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp?nextUrl=/order/confirm");
+            resp.sendRedirect("/login.jsp");
+            req.getSession().setAttribute("nextUrl", req.getRequestURI());
         }else {
-            req.getSession().setAttribute("currentUser", currentUser);
             filterChain.doFilter(servletRequest, servletResponse);
         }
     }
